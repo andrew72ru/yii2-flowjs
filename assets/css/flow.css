@@ -1,0 +1,7 @@
+.flow-browse-image,
+.flow-browse-file,
+.flow-browse {
+    color: #0d6aad;
+    cursor: pointer;
+    border-bottom: dashed 1px #0d6aad;
+}
