@@ -18,6 +18,8 @@
  */
 return [
     'Drop files here or {select} files on You computer' => 'Перетащите файл сюда или {select} файл на вашем компьютере',
+    'File successfully uploaded to {place}' => 'Файл загружен в {place}',
+    'File will send to server immediately' => 'Файл будет отправлен на сервер немедленно',
     'Your browser, unfortunately, not support the HTML5 File API.' => 'К сожалению, ваш браузер не поддерживает HTML5 File API. Обновите браузер или используйте Google Chrome',
     'select' => 'выберите',
 ];
