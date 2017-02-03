@@ -5,3 +5,8 @@
     cursor: pointer;
     border-bottom: dashed 1px #0d6aad;
 }
+
+.flow-dragover {
+    box-shadow: 0 0 1em #dad39f !important;
+    background-color: #fbfaec !important;
+}

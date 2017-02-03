@@ -22,5 +22,5 @@ class FlowJsAsset extends AssetBundle
         'position' => View::POS_HEAD
     ];
 
-    public $depends = ['andrew72ru\user\helpers\FlowJsCssAsset'];
+    public $depends = ['andrew72ru\flowjs\assets\FlowJsCssAsset'];
 }

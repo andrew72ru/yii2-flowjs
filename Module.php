@@ -26,6 +26,8 @@ class Module extends \yii\base\Module
         'upload' => 'upload/upload'
     ];
 
+    public $defaultRoute = '/flowjs/upload';
+
     public function init()
     {
         parent::init();
