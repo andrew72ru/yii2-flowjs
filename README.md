@@ -54,7 +54,7 @@ Basic widget for upload one image file in `\andrew72ru\flowjs\widgets\UploadImag
 
 #### How it works
 
-`UploadImageWidget` do not create a file-input field, it is call [Flow](https://github.com/flowjs/flow.js) with `Module::defaultRoute` url, system `_csrf`, `callbackClass` and `callbackMethod` parameters. Flow send a post-requests for controller, controller save file and when file is saved, call the `[callbackClass, callbackMethod]` as callable function with server file path.
+`UploadImageWidget` do not create a file-input field, it is call [Flow](https://github.com/flowjs/flow.js) with `Module::defaultRoute` url, system `_csrf`, `callbackClass` and `callbackMethod` parameters. Flow send a post-requests for controller, controller saves the file and when file is saved, call the `[callbackClass, callbackMethod]` as callable function with server file path.
  
 I have some doubts about this, but in my mind it work consistently and safely, because of private function in controller check `callbackClass` and `callbackMethod` params to:
 
@@ -63,11 +63,11 @@ I have some doubts about this, but in my mind it work consistently and safely, b
 * `callbackMethod` is static, and
 * `callbackClass` in namespace
 
-If there conditions are not met, controller calls a default module method `defaultCallback`, it return a string with server file path.
+If there conditions are not met, controller calls a default module method `defaultCallback`, which returns the string with server file path.
 
-If controller calls from web with post request and get a (for example) class name `\DateTime` and static method `createFromFormat` in this request, `\Datetime::createFromFormat` will not be called, because `\Datetime` class in root namespace. Anyway, some static methods of namespaced classes may be called, and this is a security risk, but I don't know, how to avoid it.
+If controller calls from web with post request and get, for example, a class name `\DateTime` and static method `createFromFormat` in this request, `\Datetime::createFromFormat` will not be called, because `\Datetime` class in root namespace. Anyway, some static methods of namespaced classes may be called, and this is a security risk, but I don't know, how to avoid it.
 
-To avoid this threats, may pass to controller a path to store ready files, but this is not will work if wee need a resize image, rename file or store file in database, for example.
+To avoid this threats, it is possible to send to controller a file path for store of ready files, but it will not work if we need to resize image, rename file or store file in database, for example.
 
 Well, I have no idea about this.
 
