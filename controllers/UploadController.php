@@ -10,7 +10,11 @@ namespace andrew72ru\flowjs\controllers;
 
 
 use andrew72ru\flowjs\Module;
+use Flow\Config;
+use Flow\File;
+use Flow\Request;
 use yii\base\Controller;
+use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use yii\web\Response;
 use Yii;
@@ -25,13 +29,13 @@ use Yii;
  */
 class UploadController extends Controller
 {
-    /** @var  \Flow\Request */
+    /** @var Request $request */
     private $request;
 
-    /** @var  \Flow\Config $config */
+    /** @var  Config $config */
     private $config;
 
-    /** @var  \Flow\File $file */
+    /** @var  File $file */
     private $file;
 
     /**
@@ -45,12 +49,30 @@ class UploadController extends Controller
         if(!is_dir($dir))
             FileHelper::createDirectory($dir);
 
-        $this->config = new \Flow\Config();
+        $this->config = new Config();
         $this->config->setTempDir($dir);
 
-        $this->file = new \Flow\File($this->config);
+        $this->file = new File($this->config);
 
-        $this->request = new \Flow\Request();
+        $this->request = new Request();
+    }
+
+    /**
+     * Only POST requests
+     *
+     * @return array
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'upload' => ['post']
+                ]
+            ]
+        ];
     }
 
     /**
@@ -105,7 +127,7 @@ class UploadController extends Controller
         {
             if(method_exists($class, $method) && is_callable([$class, $method]))
             {
-                if((new \ReflectionMethod($class, $method))->isStatic())
+                if((new \ReflectionMethod($class, $method))->isStatic() && (new \ReflectionClass($class))->inNamespace())
                     return [$class, $method];
             }
         }
