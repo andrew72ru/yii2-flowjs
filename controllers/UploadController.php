@@ -12,7 +12,8 @@ namespace andrew72ru\flowjs\controllers;
 use andrew72ru\flowjs\Module;
 use yii\base\Controller;
 use yii\helpers\FileHelper;
-use yii\helpers\Json;
+use yii\web\Response;
+use Yii;
 
 /**
  * Controller for upload files
@@ -33,11 +34,14 @@ class UploadController extends Controller
     /** @var  \Flow\File $file */
     private $file;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
 
-        $dir = \Yii::getAlias($this->module->tempChunksDirectory);
+        $dir = Yii::getAlias($this->module->tempChunksDirectory);
         if(!is_dir($dir))
             FileHelper::createDirectory($dir);
 
@@ -50,18 +54,22 @@ class UploadController extends Controller
     }
 
     /**
+     * Uploads a file
+     *
      * @return bool|string
      */
     public function actionUpload()
     {
-        if(\Yii::$app->request->isGet)
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(Yii::$app->request->isGet)
         {
             if($this->file->checkChunk())
-                \Yii::$app->response->setStatusCode(200, 'Ok');
+                Yii::$app->response->setStatusCode(200, 'Ok');
             else
-                \Yii::$app->response->setStatusCode(204, 'No Content');
+                Yii::$app->response->setStatusCode(204, 'No Content');
 
-            \Yii::$app->response->send();
+            Yii::$app->response->send();
             return false;
         }
 
@@ -69,17 +77,40 @@ class UploadController extends Controller
             $this->file->saveChunk();
         else
         {
-            \Yii::$app->response->setStatusCode(400, 'Bad Request');
-            \Yii::$app->response->send();
+            Yii::$app->response->setStatusCode(400, 'Bad Request');
+            Yii::$app->response->send();
             return false;
         }
 
         if($this->file->validateFile() && $this->file->save($this->config->getTempDir() . DIRECTORY_SEPARATOR . $this->request->getFileName()))
         {
-            return Json::encode(['result' => 'File uploaded to ' . $this->config->getTempDir() . DIRECTORY_SEPARATOR . $this->request->getFileName()]);
+            return call_user_func($this->checkCallable(),
+                $this->config->getTempDir() . DIRECTORY_SEPARATOR . $this->request->getFileName());
         }
 
         return false;
+    }
+
+    /**
+     * Function checks a callback_class and callback_method from $_POST
+     *
+     * @return array|mixed|callable
+     */
+    private function checkCallable()
+    {
+        $class = Yii::$app->request->post('callback_class', null);
+        $method = Yii::$app->request->post('callback_method', null);
+
+        if($class !== null && class_exists($class))
+        {
+            if(method_exists($class, $method) && is_callable([$class, $method]))
+            {
+                if((new \ReflectionMethod($class, $method))->isStatic())
+                    return [$class, $method];
+            }
+        }
+
+        return $this->module->callback;
     }
 
 }
