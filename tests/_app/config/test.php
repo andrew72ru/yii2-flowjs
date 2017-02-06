@@ -18,10 +18,6 @@ return [
         ]
     ],
     'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'sqlite:' . __DIR__ . '/../../_data/temp.db'
-        ],
         'urlManager' => [
             'showScriptName' => true,
         ],
