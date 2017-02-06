@@ -2,6 +2,7 @@
 
 return [
     'id' => 'yii2-flowjs-tests',
+    'basePath' => dirname(__DIR__),
     'language' => 'en-US',
     'aliases' => [
         '@andrew72ru/flowjs' => dirname(dirname(dirname(__DIR__))),
@@ -19,7 +20,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'sqlite:' . \Yii::getAlias('@common/tests/_data/temp.db')
+            'dsn' => 'sqlite:' . __DIR__ . '/../../_data/temp.db'
         ],
         'urlManager' => [
             'showScriptName' => true,
