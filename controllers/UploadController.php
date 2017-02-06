@@ -123,11 +123,27 @@ class UploadController extends Controller
         $class = Yii::$app->request->post('callback_class', null);
         $method = Yii::$app->request->post('callback_method', null);
 
+        $allow = false;
+
         if($class !== null && class_exists($class))
         {
             if(method_exists($class, $method) && is_callable([$class, $method]))
             {
-                if((new \ReflectionMethod($class, $method))->isStatic() && (new \ReflectionClass($class))->inNamespace())
+                // Check the allowed namespace
+                $refClass = new \ReflectionClass($class);
+                if(!is_array($this->module->allowedNamespaces))
+                    $this->module->allowedNamespaces = [$this->module->allowedNamespaces];
+
+                foreach ($this->module->allowedNamespaces as $allowedNamespace)
+                {
+                    if(in_array($allowedNamespace, explode('\\', $refClass->getNamespaceName())))
+                    {
+                        $allow = true;
+                        break;
+                    }
+                }
+
+                if((new \ReflectionMethod($class, $method))->isStatic() && $allow)
                     return [$class, $method];
             }
         }

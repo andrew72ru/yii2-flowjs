@@ -42,6 +42,8 @@ class Module extends \yii\base\Module
      */
     public $defaultRoute = '/flowjs/upload';
 
+    public $allowedNamespaces = ['andrew72ru'];
+
     /**
      * @var array|string $callback
      * Callback method for controller
