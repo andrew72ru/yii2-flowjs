@@ -84,6 +84,7 @@ If there conditions are not met, controller calls a default module method `defau
 ## TODO
 
 - create widgets for upload many files / directory
+- Acceptance / functional tests with JS support
 
 ## Origin
 
