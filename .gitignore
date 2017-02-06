@@ -32,3 +32,4 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+tests/_support/_generated

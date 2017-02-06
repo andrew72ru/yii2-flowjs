@@ -65,6 +65,7 @@ php composer.phar require --prefer-dist andrew72ru/yii2-flowjs
 ## TODO
 
 - виджеты для загрузки множества файлов или каталога
+- функциональные / приемочные тесты с JS
 
 ## Ссылки
 
