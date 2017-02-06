@@ -14,8 +14,14 @@ extensions:
         - Codeception\Extension\RunFailed
 modules:
     config:
-        Db:
-            dsn: ''
-            user: ''
-            password: ''
-            dump: tests/_data/dump.sql
+        Yii2:
+            configFile: 'tests/_app/config/test.php'
+coverage:
+    enabled: true
+    include:
+        - ../assets/*
+        - ../commands/*
+        - ../controllers/*
+        - ../widgets/*
+        - ../Bootstrap.php
+        - ../Module.php
