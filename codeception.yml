@@ -16,7 +16,6 @@ modules:
     config:
         Yii2:
             configFile: 'tests/_app/config/test.php'
-            part: init
 coverage:
     enabled: true
     include:
