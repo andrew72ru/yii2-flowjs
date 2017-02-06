@@ -69,7 +69,7 @@ Basic widget for upload one image file in `\andrew72ru\flowjs\widgets\UploadImag
 
 #### How it works
 
-`UploadImageWidget` do not create a file-input field, it is call [Flow](https://github.com/flowjs/flow.js) with `Module::defaultRoute` url, system `_csrf`, `callbackClass` and `callbackMethod` parameters. Flow send a post-requests for controller, controller save file and when file is saved, call the `[callbackClass, callbackMethod]` as callable function with server file path.
+`UploadImageWidget` do not create a file-input field, it is call [Flow](https://github.com/flowjs/flow.js) with `Module::defaultRoute` url, system `_csrf`, `callbackClass` and `callbackMethod` parameters. Flow send a post-requests for controller, controller saves the file and when file is saved, call the `[callbackClass, callbackMethod]` as callable function with server file path.
  
 The upload controller checks the `callbackClass` and `callbackMethod` params to:
 
