@@ -125,6 +125,12 @@ class UploadController extends Controller
 
         $allow = false;
 
+        if($class === null)
+            Yii::error('Class is null');
+
+        if(!class_exists($class))
+            Yii::error("Class {$class} does not exists");
+
         if($class !== null && class_exists($class))
         {
             if(method_exists($class, $method) && is_callable([$class, $method]))
@@ -136,11 +142,14 @@ class UploadController extends Controller
 
                 foreach ($this->module->allowedNamespaces as $allowedNamespace)
                 {
-                    if(in_array($allowedNamespace, explode('\\', $refClass->getNamespaceName())))
+                    if(in_array($allowedNamespace, explode('\\', $refClass->getNamespaceName()))
+                        || $allowedNamespace == $refClass->getNamespaceName())
                     {
                         $allow = true;
                         break;
-                    }
+                    } else
+                        Yii::error('class ' . $refClass->getName()
+                                   . ' in not allowed namespace. Namespace is ' . $refClass->getNamespaceName());
                 }
 
                 if((new \ReflectionMethod($class, $method))->isStatic() && $allow)
